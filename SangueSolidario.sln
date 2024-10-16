@@ -5,6 +5,12 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SangueSolidario.API", "SangueSolidario.API\SangueSolidario.API.csproj", "{BEBACA56-601D-4EC5-9EB2-49B0014B2D66}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SangueSolidario.Application", "SangueSolidario.Application\SangueSolidario.Application.csproj", "{E02495F8-DCA1-4968-B2C4-8DD51528B6CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SangueSolidario.Core", "SangueSolidario.Core\SangueSolidario.Core.csproj", "{6E239ADF-B1A1-49B7-A060-874D27D91C85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SangueSolidario.Infrastructure", "SangueSolidario.Infrastructure\SangueSolidario.Infrastructure.csproj", "{3A6DC659-CC6B-4C0D-B42E-5F206BD29301}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{BEBACA56-601D-4EC5-9EB2-49B0014B2D66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEBACA56-601D-4EC5-9EB2-49B0014B2D66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEBACA56-601D-4EC5-9EB2-49B0014B2D66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E02495F8-DCA1-4968-B2C4-8DD51528B6CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E02495F8-DCA1-4968-B2C4-8DD51528B6CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E02495F8-DCA1-4968-B2C4-8DD51528B6CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E02495F8-DCA1-4968-B2C4-8DD51528B6CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E239ADF-B1A1-49B7-A060-874D27D91C85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E239ADF-B1A1-49B7-A060-874D27D91C85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E239ADF-B1A1-49B7-A060-874D27D91C85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E239ADF-B1A1-49B7-A060-874D27D91C85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A6DC659-CC6B-4C0D-B42E-5F206BD29301}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A6DC659-CC6B-4C0D-B42E-5F206BD29301}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A6DC659-CC6B-4C0D-B42E-5F206BD29301}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A6DC659-CC6B-4C0D-B42E-5F206BD29301}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
