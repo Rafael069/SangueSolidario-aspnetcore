@@ -13,6 +13,9 @@ namespace SangueSolidario.Core.Entities
         public Doador Doador { get; set; }
 
         // Construtor
+
+        public Doacao() { }
+
         public Doacao(int id, int doadorId, DateTime dataDoacao, int quantidadeML)
         {
             Id = id;

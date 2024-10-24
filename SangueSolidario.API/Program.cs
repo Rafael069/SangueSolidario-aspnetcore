@@ -1,4 +1,6 @@
 
+using SangueSolidario.Infrastructure.Persistence;
+
 namespace SangueSolidario.API
 {
     public class Program
@@ -13,6 +15,9 @@ namespace SangueSolidario.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            // Adiciona o SangueSolidarioDbContext como serviço no contêiner de injeção de dependência
+            builder.Services.AddSingleton<SangueSolidarioDbContext>();
 
             var app = builder.Build();
 

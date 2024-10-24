@@ -11,7 +11,10 @@ namespace SangueSolidario.Core.Entities
         public string FatorRh { get; set; }
         public int QuantidadeML { get; set; }
 
-        
+        public EstoqueSangue()
+        {
+        }
+
         public EstoqueSangue(int id, string tipoSanguineo, string fatorRh, int quantidadeML)
         {
             Id = id;

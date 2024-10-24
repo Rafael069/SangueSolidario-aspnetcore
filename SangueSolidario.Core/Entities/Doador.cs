@@ -15,7 +15,9 @@ public class Doador
     public Endereco Endereco { get; set; }
     public List<Doacao> Doacoes { get; set; } = new List<Doacao>();
 
-    /
+    // Construtor sem parâmetros (padrão)
+    public Doador() { }
+
     public Doador(int id, string nomeCompleto, string email, DateTime dataNascimento, string genero, double peso, string tipoSanguineo, string fatorRh, Endereco endereco)
     {
         Id = id;
