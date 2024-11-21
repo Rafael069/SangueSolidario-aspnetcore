@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+    <Folder Include="Exceptions\" />
+    <Folder Include="Repositories\" />
+	<Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>
