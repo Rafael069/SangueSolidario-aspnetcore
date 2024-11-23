@@ -10,4 +10,8 @@
     <ProjectReference Include="..\SangueSolidario.Core\SangueSolidario.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

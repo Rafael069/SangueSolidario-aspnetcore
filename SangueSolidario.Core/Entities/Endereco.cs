@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 
-public class Endereco
+public class Endereco : BaseEntity
 {
 
 
@@ -11,9 +11,9 @@ public class Endereco
 
     public Endereco() { }
 
-    public Endereco(int id, string logradouro, string cidade, string estado, string cep, int doadorId)
+    public Endereco(/*int id,*/ string logradouro, string cidade, string estado, string cep, int doadorId)
     {
-        Id = id;
+        //Id = id;
         Logradouro = logradouro;
         Cidade = cidade;
         Estado = estado;
@@ -21,15 +21,13 @@ public class Endereco
         DoadorId = doadorId;
     }
 
-    public int Id { get; set; }
+    //public int Id { get; set; }
     public string Logradouro { get; set; }
     public string Cidade { get; set; }
     public string Estado { get; set; }
     public string CEP { get; set; }
     public int DoadorId { get; set; }
     public Doador? Doador { get; set; }
-
-    
 
 
 
