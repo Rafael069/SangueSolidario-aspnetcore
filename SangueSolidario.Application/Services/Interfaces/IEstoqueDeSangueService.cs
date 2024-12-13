@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace SangueSolidario.Application.Services.Interfaces
 {
-    public interface IDoadoresServices
+    public interface IEstoqueDeSangueService
     {
-        List<DoadorViewModel> GetAll();
+        List<EstoqueDeSangueViewModel> GetAll();
 
-        DoadoresDetailsViewModel GetById(int id);
+        EstoqueDeSangueDetailsViewModel GetById(int id);
 
-        int Create (NewDoadorInputModel inputModel);
+        int Create(NewEstoqueDeSangueInputModel inputModel);
 
-        void Update(UpdateDoadorInputModel inputModel);
+        void Update(UpdateEstoqueDeSangueInputModel inputModel);
 
         void Delete(int id);
     }
