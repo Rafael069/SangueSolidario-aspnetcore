@@ -1,4 +1,6 @@
 
+using SangueSolidario.Application.Services.Implementations;
+using SangueSolidario.Application.Services.Interfaces;
 using SangueSolidario.Infrastructure.Persistence;
 
 namespace SangueSolidario.API
@@ -9,6 +11,16 @@ namespace SangueSolidario.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
+            // Adiciona o SangueSolidarioDbContext como serviço no contêiner de injeção de dependência
+            builder.Services.AddSingleton<SangueSolidarioDbContext>();
+
+            builder.Services.AddScoped<IDoadorService, DoadorService>();
+            builder.Services.AddScoped<IDoacaoService, DoacaoService>();
+            builder.Services.AddScoped<IEnderecoService, EnderecoService>();
+            builder.Services.AddScoped<IEstoqueDeSangueService, EstoqueDeSangueService>();
+
+
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -16,8 +28,6 @@ namespace SangueSolidario.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Adiciona o SangueSolidarioDbContext como serviço no contêiner de injeção de dependência
-            builder.Services.AddSingleton<SangueSolidarioDbContext>();
 
             var app = builder.Build();
 
