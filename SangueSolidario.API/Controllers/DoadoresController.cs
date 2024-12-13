@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SangueSolidario.Application.InputModels;
+using SangueSolidario.Application.Services.Implementations;
+using SangueSolidario.Application.Services.Interfaces;
 
 namespace SangueSolidario.API.Controllers
 {
@@ -6,36 +9,55 @@ namespace SangueSolidario.API.Controllers
     public class DoadoresController : ControllerBase
     {
 
-        //Busca doador
+        private readonly IDoadorService _doadorService;
+
+        public DoadoresController(IDoadorService doadorService)
+        {
+            _doadorService = doadorService;
+        }
+
+        //Busca doador especifíco
 
         [HttpGet("{id}")]
-        public IActionResult GetById()
+
+        public IActionResult GetById(int id)
         {
-            return Ok();
+
+            var doador = _doadorService.GetById(id);
+
+            if (doador == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(doador);
         }
 
+
+        //Busca todos doadores
         [HttpGet]
         [Route("all")]
-        //Busca todos doadores
+        
         public IActionResult GetAll()
         {
-            return Ok();
+            var doadores = _doadorService.GetAll();
+            return Ok(doadores);
         }
-
 
         //Cadastro de doadores
 
 
         [HttpPost]
-        public IActionResult Post(/*[FromBody] CreaLivroModel createDoador*/)
+        public IActionResult Post([FromBody] NewDoadorInputModel inputModel)
         {
             // Validação
-            //if (createLivro.titulo > 50)
-            //{
-            //    return BadRequest();
-            //}
-            //return CreateAtAction(nameof(GetById), new { id = createLivro.id }, createLivro);
-            return Ok();
+
+            //
+
+            var id = _doadorService.Create(inputModel);
+
+            return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
+
         }
 
 
@@ -43,33 +65,30 @@ namespace SangueSolidario.API.Controllers
 
 
         [HttpPut("{id}")]
-        public IActionResult Put(/*int id, [FromBody] UpdateLivroModel updateLivro*/)
+        public IActionResult Put(int id, [FromBody] UpdateDoadorInputModel inputModel)
         {
             // Validações
             //if (updateLivro.descricao.lengh > 50)
             //{
             //    return BadRequest();
             //}
+            _doadorService.Update(inputModel);
 
             return NoContent();
+
         }
 
+        //Deleta doares
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            // Lógica para verificar se o doador existe
-            var doador = Ok();/* Aqui você pode fazer a busca do doador, por exemplo, doadorService.GetById(id) */
 
-            if (doador == null)
-            {
-                return NotFound(); // Retorna 404 se o doador não for encontrado
-            }
-
-            // Lógica para excluir o doador, por exemplo:
-            // doadorService.Delete(id);
+            _doadorService.Delete(id);
 
             return NoContent(); // Retorna 204 (sem conteúdo) após a exclusão bem-sucedida
+
+
         }
 
 

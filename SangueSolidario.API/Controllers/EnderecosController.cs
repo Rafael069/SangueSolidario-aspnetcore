@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SangueSolidario.Application.InputModels;
+using SangueSolidario.Application.Services.Implementations;
+using SangueSolidario.Application.Services.Interfaces;
 using System.Runtime.ConstrainedExecution;
 
 namespace SangueSolidario.API.Controllers
@@ -6,72 +9,78 @@ namespace SangueSolidario.API.Controllers
     [Route("api/enderecos")]
     public class EnderecosController : ControllerBase
     {
-        //Cadastrar
+        private readonly IEnderecoService _enderecoService;
+
+        public EnderecosController(IEnderecoService enderecoService)
+        {
+            _enderecoService = enderecoService;
+        }
 
         //Cadastro de endereço integrar API externa para consulta CEP. (PLUS)
 
-        //Busca doador
+        //Busca endereco
 
         [HttpGet("{id}")]
-        public IActionResult GetById()
+        public IActionResult GetById(int id)
         {
-            return Ok();
+
+            var endereco = _enderecoService.GetById(id);
+
+            if (endereco == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(endereco);
         }
+
+        //Busca todos enderecos
 
         [HttpGet]
         [Route("all")]
-        //Busca todos doadores
+        
         public IActionResult GetAll()
         {
-            return Ok();
+            var enderecos = _enderecoService.GetAll();
+            return Ok(enderecos);
         }
 
 
-        //Cadastro de doadores
+        //Cadastro de enderecos
 
 
         [HttpPost]
-        public IActionResult Post(/*[FromBody] CreaLivroModel createDoador*/)
+        public IActionResult Post([FromBody] NewEnderecoInputModel inputModel)
         {
             // Validação
-            //if (createLivro.titulo > 50)
-            //{
-            //    return BadRequest();
-            //}
-            //return CreateAtAction(nameof(GetById), new { id = createLivro.id }, createLivro);
-            return Ok();
+
+            //
+
+            var id = _enderecoService.Create(inputModel);
+            return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
+
         }
 
 
-        //Atualizar doares
+        //Atualizar enderecos
 
 
         [HttpPut("{id}")]
-        public IActionResult Put(/*int id, [FromBody] UpdateLivroModel updateLivro*/)
+        public IActionResult Put(int id, [FromBody] UpdateEnderecoInputModel inputModel)
         {
             // Validações
-            //if (updateLivro.descricao.lengh > 50)
-            //{
-            //    return BadRequest();
-            //}
 
+            //
+            _enderecoService.Update(inputModel);
             return NoContent();
         }
 
+        //Deleta enderecos
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            // Lógica para verificar se o doador existe
-            //var doador = Ok();/* Aqui você pode fazer a busca do doador, por exemplo, doadorService.GetById(id) */
-
-            //if (doador == null)
-            //{
-            //    return NotFound(); // Retorna 404 se o doador não for encontrado
-            //}
-
-            // Lógica para excluir o doador, por exemplo:
-            // doadorService.Delete(id);
+            _enderecoService.Delete(id);
 
             return NoContent(); // Retorna 204 (sem conteúdo) após a exclusão bem-sucedida
         }
