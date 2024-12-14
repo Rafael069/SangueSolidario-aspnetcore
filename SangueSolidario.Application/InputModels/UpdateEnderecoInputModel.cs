@@ -16,6 +16,6 @@ namespace SangueSolidario.Application.InputModels
         public string CEP { get; set; }
         public int DoadorId { get; set; }
         
-        public EnderecoStatusEnum Status { get; set; }
+        //public EnderecoStatusEnum Status { get; set; }
     }
 }

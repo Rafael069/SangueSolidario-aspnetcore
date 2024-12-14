@@ -16,13 +16,13 @@ namespace SangueSolidario.Infrastructure.Persistence
 
             Enderecos = new List<Endereco>
             {
-                new Endereco {Id = 1, Logradouro = "Rua A", Cidade = "Cidade X", Estado = "Estado Y", CEP = "c", Status = EnderecoStatusEnum.Ativo },
-                new Endereco {Id = 2, Logradouro = "Avenida B", Cidade = "Cidade Z", Estado = "Estado W", CEP = "87654-321",Status = EnderecoStatusEnum.Ativo }
+                new Endereco {Id = 1, Logradouro = "Rua A", Cidade = "Cidade X", Estado = "Estado Y", CEP = "87654-324", DoadorId = 1 ,Status = EnderecoStatusEnum.Ativo },
+                new Endereco {Id = 2, Logradouro = "Avenida B", Cidade = "Cidade Z", Estado = "Estado W", CEP = "87654-321", DoadorId = 2,Status = EnderecoStatusEnum.Ativo }
             };
 
             Doacoes = new List<Doacao>
             {
-                new Doacao {Id = 1, DataDoacao = DateTime.Now.AddDays(-30), QuantidadeML = 450, Status = DoacaoStatusEnum.Ativo },
+                new Doacao {Id = 1, DataDoacao = DateTime.Now.AddDays(-30), QuantidadeML = 45 ,Status = DoacaoStatusEnum.Ativo },
                 new Doacao {Id = 2,  DataDoacao = DateTime.Now.AddDays(-10), QuantidadeML = 420, Status = DoacaoStatusEnum.Ativo  }
             };
 
