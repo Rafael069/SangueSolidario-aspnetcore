@@ -39,7 +39,7 @@ namespace SangueSolidario.Application.Services.Implementations
                 endereco.Cidade,
                 endereco.Estado,
                 endereco.CEP,
-                endereco.DoadorId,
+                endereco.IdDoador,
                 endereco.Doador
                 );
 
@@ -66,7 +66,7 @@ namespace SangueSolidario.Application.Services.Implementations
 
         public int Create(NewEnderecoInputModel inputModel)
         {
-            var endereco = new Endereco(inputModel.Id, inputModel.Logradouro, inputModel.Cidade, inputModel.Estado, inputModel.CEP, inputModel.DoadorId);
+            var endereco = new Endereco(inputModel.Logradouro, inputModel.Cidade, inputModel.Estado, inputModel.CEP, inputModel.DoadorId);
 
             _dbcontext.Enderecos.Add(endereco);
 

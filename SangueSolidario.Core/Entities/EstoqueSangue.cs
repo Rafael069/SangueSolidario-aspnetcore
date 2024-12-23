@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace SangueSolidario.Core.Entities
 {
-    public class EstoqueSangue /*: BaseEntity*/
+    public class EstoqueSangue : BaseEntity
     {
-        public int Id { get; set; }
+
         public string TipoSanguineo { get; set; }
         public string FatorRh { get; set; }
         public int QuantidadeML { get; set; }
@@ -17,9 +17,8 @@ namespace SangueSolidario.Core.Entities
         {
         }
 
-        public EstoqueSangue(int id,string tipoSanguineo, string fatorRh, int quantidadeML/*, EstoquesSangueEnum status*/)
+        public EstoqueSangue(string tipoSanguineo, string fatorRh, int quantidadeML/*, EstoquesSangueEnum status*/)
         {
-            Id = id;
             TipoSanguineo = tipoSanguineo;
             FatorRh = fatorRh;
             QuantidadeML = quantidadeML;

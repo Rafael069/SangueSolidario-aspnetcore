@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 
 
-public class Endereco /*: BaseEntity*/
+public class Endereco : BaseEntity
 {
 
 
@@ -12,23 +12,23 @@ public class Endereco /*: BaseEntity*/
 
     public Endereco() { }
 
-    public Endereco(int id,string logradouro, string cidade, string estado, string cep, int doadorId/*, EnderecoStatusEnum status*/)
+    public Endereco(string logradouro, string cidade, string estado, string cep, int id_doador/*, EnderecoStatusEnum status*/)
     {
-        Id = id;
+
         Logradouro = logradouro;
         Cidade = cidade;
         Estado = estado;
         CEP = cep;
-        DoadorId = doadorId;
+        IdDoador = id_doador;
         Status = EnderecoStatusEnum.Ativo;
     }
 
-    public int Id { get; set; }
+
     public string Logradouro { get; set; }
     public string Cidade { get; set; }
     public string Estado { get; set; }
     public string CEP { get; set; }
-    public int DoadorId { get; set; }
+    public int IdDoador { get; set; }
     public Doador? Doador { get; set; }
     public EnderecoStatusEnum Status { get; set; }
 

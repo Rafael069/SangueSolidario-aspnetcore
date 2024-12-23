@@ -26,7 +26,7 @@ namespace SangueSolidario.Application.Services.Implementations
 
         public EstoqueDeSangueDetailsViewModel GetById(int id)
         {
-            var estoqueDeSangue = _dbcontext.EstoquesSangue.SingleOrDefault(d => d.Id == id);
+            var estoqueDeSangue = _dbcontext.EstoquesSangue.SingleOrDefault(es => es.Id == id);
 
             if (estoqueDeSangue.Status == EstoquesSangueEnum.Removido)
                 return null;
@@ -48,12 +48,12 @@ namespace SangueSolidario.Application.Services.Implementations
 
             // Filtrando estoques ativos
             var estoquesDeSangueAtivas = _dbcontext.EstoquesSangue
-                .Where(e => e.Status == EstoquesSangueEnum.Ativo)
+                .Where(es => es.Status == EstoquesSangueEnum.Ativo)
                 .ToList();
 
 
             var estoquesDeSangueViewModel = estoquesDeSangueAtivas
-            .Select(e => new EstoqueDeSangueViewModel(e.Id, e.TipoSanguineo))
+            .Select(es => new EstoqueDeSangueViewModel(es.Id, es.TipoSanguineo))
             .ToList();
 
             return estoquesDeSangueViewModel;
@@ -63,7 +63,7 @@ namespace SangueSolidario.Application.Services.Implementations
 
         public int Create(NewEstoqueDeSangueInputModel inputModel)
         {
-            var estoqueDeSangue = new EstoqueSangue(inputModel.Id, inputModel.TipoSanguineo, inputModel.FatorRh, inputModel.QuantidadeML/*,inputModel.Status*/);
+            var estoqueDeSangue = new EstoqueSangue(inputModel.TipoSanguineo, inputModel.FatorRh, inputModel.QuantidadeML/*,inputModel.Status*/);
 
             _dbcontext.EstoquesSangue.Add(estoqueDeSangue);
 
@@ -73,7 +73,7 @@ namespace SangueSolidario.Application.Services.Implementations
 
         public void Delete(int id)
         {
-            var estoqueDeSangue = _dbcontext.EstoquesSangue.SingleOrDefault(e => e.Id == id);
+            var estoqueDeSangue = _dbcontext.EstoquesSangue.SingleOrDefault(es => es.Id == id);
 
             estoqueDeSangue.DeleteEstoque();
         }

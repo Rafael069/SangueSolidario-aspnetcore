@@ -8,14 +8,14 @@ namespace SangueSolidario.Application.ViewModels
 {
     public class EnderecoDetailsViewModel
     {
-        public EnderecoDetailsViewModel(int id, string logradouro, string cidade, string estado, string cEP, int doadorId, Doador? doador)
+        public EnderecoDetailsViewModel(int id, string logradouro, string cidade, string estado, string cep, int id_doador, Doador? doador)
         {
             Id = id;
             Logradouro = logradouro;
             Cidade = cidade;
             Estado = estado;
-            CEP = cEP;
-            DoadorId = doadorId;
+            CEP = cep;
+            IdDoador = id_doador;
             Doador = doador;
         }
 
@@ -24,7 +24,7 @@ namespace SangueSolidario.Application.ViewModels
         public string Cidade { get; set; }
         public string Estado { get; set; }
         public string CEP { get; set; }
-        public int DoadorId { get; set; }
+        public int IdDoador { get; set; }
         public Doador? Doador { get; set; }
     }
 }

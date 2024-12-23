@@ -10,16 +10,16 @@ namespace SangueSolidario.Application.ViewModels
 {
     public class DoacaoViewModel
     {
-        public DoacaoViewModel(int id, int doadorId, DateTime dataDoacao)
+        public DoacaoViewModel(int id, int id_doador, DateTime dataDoacao)
         {
             Id = id;
-            DoadorId = doadorId;
+            IdDoador = id_doador;
             DataDoacao = dataDoacao;
         }
 
 
         public int Id { get; private set; }
-        public int DoadorId { get; private set; }
+        public int IdDoador { get; private set; }
         public DateTime DataDoacao { get; private set; }
 
     }

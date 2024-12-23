@@ -67,14 +67,15 @@ namespace SangueSolidario.Application.Services.Implementations
         {
 
             var doador = new Doador(
-                inputModel.Id,
                 inputModel.NomeCompleto,
                 inputModel.Email,
                 inputModel.DataNascimento,
                 inputModel.Genero,
                 inputModel.Peso,
                 inputModel.TipoSanguineo,
-                inputModel.FatorRh
+                inputModel.FatorRh,
+                inputModel.IdEndereco,
+                inputModel.IdDoacao
                );
 
             _dbcontext.Doadores.Add(doador);

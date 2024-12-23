@@ -25,14 +25,14 @@ namespace SangueSolidario.Application.Services.Implementations
 
         public DoacaoDetailsViewModel GetById(int id)
         {
-            var doacao = _dbcontext.Doacoes.SingleOrDefault(d => d.Id == id);
+            var doacao = _dbcontext.Doacoes.SingleOrDefault(dc => dc.Id == id);
 
             if (doacao.Status == DoacaoStatusEnum.Removido)
                 return null;
 
             var doacoesDetailsViewModel = new DoacaoDetailsViewModel(
                 doacao.Id,
-                doacao.DoadorId,
+                doacao.IdDoador,
                 doacao.DataDoacao,
                 doacao.QuantidadeML,
                 doacao.Doador
@@ -41,17 +41,17 @@ namespace SangueSolidario.Application.Services.Implementations
             return doacoesDetailsViewModel;
         }
 
-        List<DoacaoViewModel> IDoacaoService.GetAll()
+        public List<DoacaoViewModel> GetAll()
         {
             var doacoes = _dbcontext.Doacoes;
 
             // Filtrando livros ativos
             var doacoesAtivas = _dbcontext.Doacoes
-                .Where(d => d.Status == DoacaoStatusEnum.Ativo)
+                .Where(dc => dc.Status == DoacaoStatusEnum.Ativo)
                 .ToList();
 
             var doacoesViewModel = doacoesAtivas
-            .Select(d => new DoacaoViewModel(d.Id, d.DoadorId, d.DataDoacao))
+            .Select(dc => new DoacaoViewModel(dc.Id, dc.IdDoador, dc.DataDoacao))
             .ToList();
 
             return doacoesViewModel;
@@ -61,7 +61,7 @@ namespace SangueSolidario.Application.Services.Implementations
         public int Create(NewDoacaoInputModel inputModel)
         {
 
-            var doacao = new Doacao(inputModel.Id, inputModel.DoadorId, inputModel.DataDoacao, inputModel.QuantidadeML/*, inputModel.Doador*/);
+            var doacao = new Doacao(inputModel.DoadorId, inputModel.DataDoacao, inputModel.QuantidadeML/*, inputModel.Doador*/);
 
             _dbcontext.Doacoes.Add(doacao);
 
@@ -70,7 +70,7 @@ namespace SangueSolidario.Application.Services.Implementations
 
         public void Delete(int id)
         {
-            var doacoes = _dbcontext.Doacoes.SingleOrDefault(d => d.Id == id);
+            var doacoes = _dbcontext.Doacoes.SingleOrDefault(dc => dc.Id == id);
 
             doacoes.DeleteDoacao();
 
@@ -78,7 +78,7 @@ namespace SangueSolidario.Application.Services.Implementations
 
         public void Update(UpdateDoacaoInputModel inputModel)
         {
-            var doacao = _dbcontext.Doacoes.SingleOrDefault(d => d.Id == inputModel.Id);
+            var doacao = _dbcontext.Doacoes.SingleOrDefault(dc => dc.Id == inputModel.Id);
 
             doacao.Update(inputModel.QuantidadeML);
         }

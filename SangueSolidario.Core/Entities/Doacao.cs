@@ -5,10 +5,9 @@ using System.Collections.Generic;
 
 namespace SangueSolidario.Core.Entities
 {
-    public class Doacao /*:  BaseEntity*/
+    public class Doacao :  BaseEntity
     {
-        public int Id { get; set; }
-        public int DoadorId { get; set; }
+        public int IdDoador { get; set; }
         public DateTime DataDoacao { get; set; }
         public int QuantidadeML { get; set; }
         public Doador Doador { get; set; }
@@ -18,10 +17,9 @@ namespace SangueSolidario.Core.Entities
 
         public Doacao() { }
 
-        public Doacao(int id, int doadorId, DateTime dataDoacao, int quantidadeML/*, Doador doador/*, DoacaoStatusEnum status*/)
+        public Doacao(int Id_doador, DateTime dataDoacao, int quantidadeML/*, Doador doador/*, DoacaoStatusEnum status*/)
         {
-            Id = id;
-            DoadorId = doadorId;
+            IdDoador = Id_doador;
             //DataDoacao = dataDoacao;
             QuantidadeML = quantidadeML;
             Doador = Doador;
