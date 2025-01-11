@@ -18,9 +18,9 @@ namespace SangueSolidario.Application.InputModels
         public double Peso { get; set; }
         public string TipoSanguineo { get; set; }
         public string FatorRh { get; set; }
-
-        public int IdEndereco { get; set; }
-        public int IdDoacao { get; set; }
+        public string CEP { get; set; }
+        //public int IdEndereco { get; set; }
+        //public int IdDoacao { get; set; }
 
 
     }

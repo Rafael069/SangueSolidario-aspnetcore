@@ -49,17 +49,17 @@ namespace SangueSolidario.API.Controllers
         //Cadastro de enderecos
 
 
-        [HttpPost]
-        public IActionResult Post([FromBody] NewEnderecoInputModel inputModel)
-        {
-            // Validação
+        //[HttpPost]
+        //public IActionResult Post([FromBody] NewEnderecoInputModel inputModel)
+        //{
+        //    // Validação
 
-            //
+        //    //
 
-            var id = _enderecoService.Create(inputModel);
-            return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
+        //    var id = _enderecoService.Create(inputModel);
+        //    return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
 
-        }
+        //}
 
 
         //Atualizar enderecos

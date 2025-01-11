@@ -66,6 +66,7 @@ namespace SangueSolidario.Application.Services.Implementations
             var estoqueDeSangue = new EstoqueSangue(inputModel.TipoSanguineo, inputModel.FatorRh, inputModel.QuantidadeML/*,inputModel.Status*/);
 
             _dbcontext.EstoquesSangue.Add(estoqueDeSangue);
+            _dbcontext.SaveChanges();
 
 
             return estoqueDeSangue.Id;
@@ -76,6 +77,7 @@ namespace SangueSolidario.Application.Services.Implementations
             var estoqueDeSangue = _dbcontext.EstoquesSangue.SingleOrDefault(es => es.Id == id);
 
             estoqueDeSangue.DeleteEstoque();
+            _dbcontext.SaveChanges();
         }
      
 
@@ -84,6 +86,7 @@ namespace SangueSolidario.Application.Services.Implementations
             var estoqueDeSangue = _dbcontext.EstoquesSangue.SingleOrDefault(e => e.Id == inputModel.Id);
 
             estoqueDeSangue.Update(inputModel.TipoSanguineo, inputModel.QuantidadeML);
+            _dbcontext.SaveChanges();
         }
     }
 }

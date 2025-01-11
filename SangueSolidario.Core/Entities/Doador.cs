@@ -22,7 +22,7 @@ public class Doador : BaseEntity
     // Construtor sem parâmetros (padrão)
     public Doador() { }
 
-    public Doador(string nomeCompleto, string email, DateTime dataNascimento, string genero, double peso, string tipoSanguineo, string fatorRh,int idEndereco, int idDoacao/*, DoadorStatusEnum status/* Endereco endereco*/)
+    public Doador(string nomeCompleto, string email, DateTime dataNascimento, string genero, double peso, string tipoSanguineo, string fatorRh/*, int idEndereco,int IdDoacao/*,int idEndereco, int idDoacao/*, DoadorStatusEnum status/* Endereco endereco*/)
     {
         NomeCompleto = nomeCompleto;
         Email = email;
@@ -32,8 +32,11 @@ public class Doador : BaseEntity
         TipoSanguineo = tipoSanguineo;
         FatorRh = fatorRh;
         Status = DoadorStatusEnum.Ativo;
-        IdEndereco = idEndereco;
-        IdDoacao = idDoacao;
+        //IdEndereco = idEndereco;
+        //Doacoes= new List<Doacao>();
+        //this.Endereco = endereco;
+        //IdEndereco = idEndereco;
+        //IdDoacao = idDoacao;
         //Endereco = endereco;
     }
 

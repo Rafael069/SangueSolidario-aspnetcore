@@ -11,7 +11,7 @@ namespace SangueSolidario.Application.Services.Interfaces
 
         DoadorDetailsViewModel GetById(int id);
 
-        int Create (NewDoadorInputModel inputModel);
+        Task<int> Create(NewDoadorInputModel inputModel);
 
         void Update(UpdateDoadorInputModel inputModel);
 

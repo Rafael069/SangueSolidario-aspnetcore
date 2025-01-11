@@ -2,6 +2,7 @@
 using SangueSolidario.Application.InputModels;
 using SangueSolidario.Application.Services.Implementations;
 using SangueSolidario.Application.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace SangueSolidario.API.Controllers
 {
@@ -48,13 +49,16 @@ namespace SangueSolidario.API.Controllers
 
 
         [HttpPost]
-        public IActionResult Post([FromBody] NewDoadorInputModel inputModel)
+        public async Task <IActionResult> Post([FromBody] NewDoadorInputModel inputModel)
         {
             // Validação
-
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); // Retorna erros de vinculação
+            }
             //
 
-            var id = _doadorService.Create(inputModel);
+            var id = await _doadorService.Create(inputModel);
 
             return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
 

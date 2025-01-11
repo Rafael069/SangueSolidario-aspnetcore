@@ -64,6 +64,7 @@ namespace SangueSolidario.Application.Services.Implementations
             var doacao = new Doacao(inputModel.DoadorId, inputModel.DataDoacao, inputModel.QuantidadeML/*, inputModel.Doador*/);
 
             _dbcontext.Doacoes.Add(doacao);
+            _dbcontext.SaveChanges();
 
             return doacao.Id;
         }
@@ -73,6 +74,7 @@ namespace SangueSolidario.Application.Services.Implementations
             var doacoes = _dbcontext.Doacoes.SingleOrDefault(dc => dc.Id == id);
 
             doacoes.DeleteDoacao();
+            _dbcontext.SaveChanges();
 
         }
 
@@ -81,6 +83,7 @@ namespace SangueSolidario.Application.Services.Implementations
             var doacao = _dbcontext.Doacoes.SingleOrDefault(dc => dc.Id == inputModel.Id);
 
             doacao.Update(inputModel.QuantidadeML);
+            _dbcontext.SaveChanges();
         }
 
 

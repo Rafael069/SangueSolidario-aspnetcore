@@ -13,8 +13,8 @@ namespace SangueSolidario.Application.Services.Interfaces
         List<EnderecoViewModel> GetAll();
 
         EnderecoDetailsViewModel GetById(int id);
-
-        int Create(NewEnderecoInputModel inputModel);
+        
+        Task<int> CreateEndereco(string cep);
 
         void Update(UpdateEnderecoInputModel inputModel);
 

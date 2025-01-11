@@ -1,4 +1,6 @@
-﻿using SangueSolidario.Application.InputModels;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using SangueSolidario.Application.InputModels;
 using SangueSolidario.Application.Services.Interfaces;
 using SangueSolidario.Application.ViewModels;
 using SangueSolidario.Core.Entities;
@@ -14,19 +16,31 @@ namespace SangueSolidario.Application.Services.Implementations
 {
     public class DoadorService : IDoadorService
     {
-        // Utilizando _dbcontext (Banco Fake)
-        private readonly SangueSolidarioDbContext _dbcontext;
 
-        public DoadorService(SangueSolidarioDbContext dbcontext)
+        private readonly SangueSolidarioDbContext _dbcontext;
+        private readonly string _connectionString;
+        //
+        private readonly IEnderecoService _enderecoService;
+        //
+
+        public DoadorService(SangueSolidarioDbContext dbcontext, IEnderecoService enderecoService, IConfiguration configuration)
         {
             // Injeção de Dependência
             _dbcontext = dbcontext;
+            _enderecoService = enderecoService;
+            _connectionString = configuration.GetConnectionString("SangueSolidarioCs");
         }
+
+
 
 
         public DoadorDetailsViewModel GetById(int id)
         {
-            var doador = _dbcontext.Doadores.SingleOrDefault(d => d.Id == id);
+            var doador = _dbcontext.Doadores
+                // Trazer dados de endereços e doações
+                .Include(d => d.Endereco)
+                .Include(d => d.Doacoes)
+                .SingleOrDefault(d => d.Id == id);
 
             if (doador.Status == DoadorStatusEnum.Removido)
                 return null;
@@ -63,25 +77,45 @@ namespace SangueSolidario.Application.Services.Implementations
             return doadoresViewModel;
         }
 
-        public int Create(NewDoadorInputModel inputModel)
+        public async Task<int> Create(NewDoadorInputModel inputModel)
         {
 
-            var doador = new Doador(
-                inputModel.NomeCompleto,
-                inputModel.Email,
-                inputModel.DataNascimento,
-                inputModel.Genero,
-                inputModel.Peso,
-                inputModel.TipoSanguineo,
-                inputModel.FatorRh,
-                inputModel.IdEndereco,
-                inputModel.IdDoacao
-               );
+ 
 
-            _dbcontext.Doadores.Add(doador);
+            // Criando Doador
+            var doador = new Doador(
+            inputModel.NomeCompleto,
+            inputModel.Email,
+            inputModel.DataNascimento,
+            inputModel.Genero,
+            inputModel.Peso,
+            inputModel.TipoSanguineo,
+            inputModel.FatorRh
+            );
+
+            // Associar o endereço ao doador
+            
+
+            // Adiciona o doador ao banco de dados
+            await _dbcontext.Doadores.AddAsync(doador);
+            await _dbcontext.SaveChangesAsync(); // Salvar o doador no banco
+
+            //Criar Endereco
+            var enderecoId = await _enderecoService.CreateEndereco(inputModel.CEP);
+
+
+
+            //Associar o endereço ao doador
+            doador.IdEndereco = enderecoId;
+
 
             return doador.Id;
+
         }
+
+
+
+
 
         public void Delete(int id)
         {
@@ -97,6 +131,7 @@ namespace SangueSolidario.Application.Services.Implementations
             var doador = _dbcontext.Doadores.SingleOrDefault(d => d.Id == inputModel.Id);
 
             doador.Update(inputModel.NomeCompleto, inputModel.Email, inputModel.DataNascimento, inputModel.Genero, inputModel.Peso, inputModel.TipoSanguineo, inputModel.FatorRh);
+            _dbcontext.SaveChanges();
         }
 
     }
