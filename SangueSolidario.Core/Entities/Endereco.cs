@@ -12,14 +12,14 @@ public class Endereco : BaseEntity
 
     public Endereco() { }
 
-    public Endereco(string logradouro, string cidade, string estado, string cep/*, int id_doador/*, EnderecoStatusEnum status*/)
+    public Endereco(string logradouro, string cidade, string estado, string cep, int id_doador/*, EnderecoStatusEnum status*/)
     {
 
         Logradouro = logradouro;
         Cidade = cidade;
         Estado = estado;
         CEP = cep;
-        //IdDoador = id_doador;
+        IdDoador = id_doador;
         Status = EnderecoStatusEnum.Ativo;
     }
 

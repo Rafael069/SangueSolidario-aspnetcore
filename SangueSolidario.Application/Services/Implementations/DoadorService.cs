@@ -101,13 +101,17 @@ namespace SangueSolidario.Application.Services.Implementations
             await _dbcontext.SaveChangesAsync(); // Salvar o doador no banco
 
             //Criar Endereco
-            var enderecoId = await _enderecoService.CreateEndereco(inputModel.CEP);
+            var enderecoId = await _enderecoService.CreateEndereco(inputModel.CEP,doador.Id);
 
 
 
             //Associar o endereço ao doador
             doador.IdEndereco = enderecoId;
 
+            // Aualiza 
+
+            _dbcontext.Doadores.Update(doador);
+            await _dbcontext.SaveChangesAsync(); // Salvar o doador no banco
 
             return doador.Id;
 

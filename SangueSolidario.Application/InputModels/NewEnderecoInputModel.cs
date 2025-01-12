@@ -20,7 +20,7 @@ namespace SangueSolidario.Application.InputModels
         public string Estado { get; set; }
         [JsonPropertyName("cep")]
         public string CEP { get; set; }
-        //public int IdDoador { get; set; }
+        public int IdDoador { get; set; }
         //public Doador? Doador { get; set; }
         //public EnderecoStatusEnum Status { get; set; }
     }

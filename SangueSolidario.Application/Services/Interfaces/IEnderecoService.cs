@@ -14,7 +14,7 @@ namespace SangueSolidario.Application.Services.Interfaces
 
         EnderecoDetailsViewModel GetById(int id);
         
-        Task<int> CreateEndereco(string cep);
+        Task<int> CreateEndereco(string cep, int id);
 
         void Update(UpdateEnderecoInputModel inputModel);
 

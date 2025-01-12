@@ -74,7 +74,7 @@ namespace SangueSolidario.Application.Services.Implementations
         }
 
         // Método para criar um novo endereço, agora integrando com ViaCepService
-        public async Task<int> CreateEndereco(string cep)
+        public async Task<int> CreateEndereco(string cep, int id)
         {
             // Fazendo a requisição à API do ViaCEP
             var response = await _httpClient.GetAsync($"{cep}/json/");
@@ -88,7 +88,8 @@ namespace SangueSolidario.Application.Services.Implementations
                 viaCepEndereco.Logradouro,
                 viaCepEndereco.Cidade,
                 viaCepEndereco.Estado,
-                viaCepEndereco.CEP
+                viaCepEndereco.CEP,
+                viaCepEndereco.IdDoador = id
             );
 
             try

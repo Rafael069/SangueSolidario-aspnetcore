@@ -12,7 +12,7 @@ using SangueSolidario.Infrastructure.Persistence;
 namespace SangueSolidario.Infrastructure.Migrations
 {
     [DbContext(typeof(SangueSolidarioDbContext))]
-    [Migration("20241225193444_CriandoBanco")]
+    [Migration("20250111224009_CriandoBanco")]
     partial class CriandoBanco
     {
         /// <inheritdoc />

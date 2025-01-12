@@ -32,6 +32,7 @@ public class Doador : BaseEntity
         TipoSanguineo = tipoSanguineo;
         FatorRh = fatorRh;
         Status = DoadorStatusEnum.Ativo;
+        
         //IdEndereco = idEndereco;
         //Doacoes= new List<Doacao>();
         //this.Endereco = endereco;
