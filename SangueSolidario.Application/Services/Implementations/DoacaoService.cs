@@ -14,14 +14,19 @@ namespace SangueSolidario.Application.Services.Implementations
 {
     public class DoacaoService : IDoacaoService
     {
-        // Utilizando _dbcontext (Banco Fake)
-        private readonly SangueSolidarioDbContext _dbcontext;
 
-        public DoacaoService(SangueSolidarioDbContext dbcontext)
+        private readonly SangueSolidarioDbContext _dbcontext;
+        //private readonly EstoqueDeSangueService _estoqueService;
+        private readonly IEstoqueDeSangueService _estoqueService;
+
+        public DoacaoService(SangueSolidarioDbContext dbcontext, IEstoqueDeSangueService estoqueService)
         {
             // Injeção de Dependência
             _dbcontext = dbcontext;
+            _estoqueService = estoqueService;
         }
+
+
 
         public DoacaoDetailsViewModel GetById(int id)
         {
@@ -60,14 +65,63 @@ namespace SangueSolidario.Application.Services.Implementations
 
         public int Create(NewDoacaoInputModel inputModel)
         {
+            // Validação da quantidade de sangue doada
+            //if (inputModel.QuantidadeML < 420 || inputModel.QuantidadeML > 470)
+            //{
+            //    throw new ArgumentException("A quantidade de sangue doada deve estar entre 420ml e 470ml.");
+            //}
 
-            var doacao = new Doacao(inputModel.DoadorId, inputModel.DataDoacao, inputModel.QuantidadeML/*, inputModel.Doador*/);
+            // Buscar o doador
+            var doador = _dbcontext.Doadores.FirstOrDefault(d => d.Id == inputModel.DoadorId);
+            if (doador == null)
+            {
+                throw new InvalidOperationException("Doador não encontrado.");
+            }
 
+
+            // Criação da doação
+            var doacao = new Doacao(inputModel.DoadorId, inputModel.DataDoacao, inputModel.QuantidadeML);
             _dbcontext.Doacoes.Add(doacao);
+
+          
+
+            // Atualizar estoque via EstoqueService
+            _estoqueService.UpdateEstoque(doador, inputModel.QuantidadeML);
+
+            // Salvar todas as mudanças de uma vez
             _dbcontext.SaveChanges();
+
 
             return doacao.Id;
         }
+
+        
+
+
+
+
+        #region Lógica de Doações nos Últimos 30 Dias com Informações dos Doadores
+        public List<RelatorioDoacaoViewModel> GerarRelatorioDoacoesUltimos30Dias()
+        {
+            var dataLimite = DateTime.Now.AddDays(-30);
+
+            var doacoesRecentes = _dbcontext.Doacoes
+                .Where(d => d.DataDoacao >= dataLimite && d.Status == DoacaoStatusEnum.Ativo)
+                .Select(d => new RelatorioDoacaoViewModel
+                {
+                    IdDoador = d.IdDoador,
+                    NomeDoador = d.Doador.NomeCompleto,  
+                    TipoSanguineo = d.Doador.TipoSanguineo,
+                    FatorRh = d.Doador.FatorRh,
+                    DataDoacao = d.DataDoacao,
+                    QuantidadeML = d.QuantidadeML
+                })
+                .ToList();
+
+            return doacoesRecentes;
+        }
+
+        #endregion
 
         public void Delete(int id)
         {
