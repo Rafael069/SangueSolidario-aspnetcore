@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using SangueSolidario.Application.InputModels;
 using SangueSolidario.Application.Services.Implementations;
 using SangueSolidario.Application.Services.Interfaces;
@@ -11,13 +12,17 @@ namespace SangueSolidario.API.Controllers
     {
 
         private readonly IDoadorService _doadorService;
+        private readonly IValidator<NewDoadorInputModel> _validator;
 
-        public DoadoresController(IDoadorService doadorService)
+        public DoadoresController(IDoadorService doadorService, IValidator<NewDoadorInputModel> validator)
         {
             _doadorService = doadorService;
+            _validator = validator;
         }
 
         //Busca doador especifíco
+
+        //Retorna histórico de doações do doador
 
         [HttpGet("{id}")]
 
@@ -52,11 +57,23 @@ namespace SangueSolidario.API.Controllers
         public async Task <IActionResult> Post([FromBody] NewDoadorInputModel inputModel)
         {
             // Validação
+
+            // Validação com FluentValidation
+            var validationResult = await _validator.ValidateAsync(inputModel);
+
+            // Se a validação falhar, retorna os erros
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);  // Retorna erros de validação
+            }
+
+            // Validação
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState); // Retorna erros de vinculação
             }
-            //
+     
 
             var id = await _doadorService.Create(inputModel);
 

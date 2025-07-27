@@ -28,11 +28,11 @@ namespace SangueSolidario.Application.Services.Implementations
             // Injeção de Dependência
             _dbcontext = dbcontext;
             _enderecoService = enderecoService;
-            _connectionString = configuration.GetConnectionString("SangueSolidarioCs");
+            //_connectionString = configuration.GetConnectionString("SangueSolidarioCs");
         }
 
 
-
+        // Trás detalhes do doador bem como histórico de doações
 
         public DoadorDetailsViewModel GetById(int id)
         {
