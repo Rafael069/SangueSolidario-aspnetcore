@@ -10,7 +10,9 @@ namespace SangueSolidario.Application.ViewModels
 {
     public class DoadorDetailsViewModel
     {
-        public DoadorDetailsViewModel(int id,string nomeCompleto, string email, DateTime dataNascimento, string genero, double peso, string tipoSanguineo, string fatorRh, Endereco endereco, List<Doacao> doacoes/*, DoacaoStatusEnum status*/)
+
+        //public DoadorDetailsViewModel(int id,string nomeCompleto, string email, DateTime dataNascimento, string genero, double peso, string tipoSanguineo, string fatorRh, Endereco endereco, List<Doacao> doacoes/*, DoacaoStatusEnum status*/)
+        public DoadorDetailsViewModel(int id, string nomeCompleto, string email, DateTime dataNascimento, string genero, double peso, string tipoSanguineo, string fatorRh, EnderecoViewModel endereco, List<DoacaoViewModel> doacoes, DoadorStatusEnum status)
         {
             Id = id;
             NomeCompleto = nomeCompleto;
@@ -22,7 +24,7 @@ namespace SangueSolidario.Application.ViewModels
             FatorRh = fatorRh;
             Endereco = endereco;
             Doacoes = doacoes;
-            //Status = DoadorStatusEnum.Ativo;
+            Status = status;
         }
 
         public int Id { get;  set; }
@@ -33,8 +35,9 @@ namespace SangueSolidario.Application.ViewModels
         public double Peso { get; set; }
         public string TipoSanguineo { get; set; }
         public string FatorRh { get; set; }
-        public Endereco Endereco { get; set; }
-        public List<Doacao> Doacoes { get; set; }
+        public EnderecoViewModel Endereco { get; set; }
+        public List<DoacaoViewModel> Doacoes { get; set; }
+        //public List<Doacao> Doacoes { get; set; }
         public DoadorStatusEnum Status { get; set; }
 
 

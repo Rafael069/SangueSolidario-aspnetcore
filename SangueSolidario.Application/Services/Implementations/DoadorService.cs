@@ -9,6 +9,7 @@ using SangueSolidario.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,8 +43,31 @@ namespace SangueSolidario.Application.Services.Implementations
                 .Include(d => d.Doacoes)
                 .SingleOrDefault(d => d.Id == id);
 
-            if (doador.Status == DoadorStatusEnum.Removido)
+            if (doador == null || doador.Status == DoadorStatusEnum.Removido)
                 return null;
+
+
+            // Mapeia o Endereco para EnderecoViewModel
+            var enderecoViewModel = new EnderecoViewModel(
+                doador.Endereco.Id,
+                doador.Endereco.Logradouro,
+                doador.Endereco.Cidade,
+                doador.Endereco.Estado,
+                doador.Endereco.CEP
+            );
+
+
+            // Mapeia a lista de Doacao para DoacaoViewModel
+            var doacoesViewModel = doador.Doacoes
+                .Select(doacao => new DoacaoViewModel(
+                    doacao.Id,
+                    doacao.IdDoador,
+                    doacao.DataDoacao,
+                    doacao.QuantidadeML // <- ajuste para o nome real se for diferente
+                ))
+                .ToList();
+
+            // Monta o ViewModel do doador
 
             var doadoresDetailsViewModel = new DoadorDetailsViewModel(
                 doador.Id,
@@ -54,8 +78,9 @@ namespace SangueSolidario.Application.Services.Implementations
                 doador.Peso,
                 doador.TipoSanguineo,
                 doador.FatorRh,
-                doador.Endereco,
-                doador.Doacoes
+                enderecoViewModel,
+                doacoesViewModel,
+                doador.Status
                 );
 
             return doadoresDetailsViewModel;
