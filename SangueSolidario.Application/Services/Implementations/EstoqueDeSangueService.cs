@@ -24,6 +24,27 @@ namespace SangueSolidario.Application.Services.Implementations
             _dbcontext = dbcontext;
         }
 
+
+        #region Relatório sobre a quantidade total de sangue por tipo disponível.
+        public List<RelatorioEstoqueSangueViewModel> GerarRelatorioQuantidadePorTipo()
+        {
+            var relatorio = _dbcontext.EstoquesSangue
+                .Where(es => es.Status == EstoquesSangueEnum.Ativo)
+                .GroupBy(es => new { es.TipoSanguineo, es.FatorRh })
+                .Select(group => new RelatorioEstoqueSangueViewModel
+                {
+                    TipoSanguineo = group.Key.TipoSanguineo,
+                    FatorRh = group.Key.FatorRh,
+                    QuantidadeTotalML = group.Sum(es => es.QuantidadeML)
+                })
+                .ToList();
+
+            return relatorio;
+        }
+         #endregion
+
+
+
         public EstoqueDeSangueDetailsViewModel GetById(int id)
         {
             var estoqueDeSangue = _dbcontext.EstoquesSangue.SingleOrDefault(es => es.Id == id);
@@ -79,14 +100,28 @@ namespace SangueSolidario.Application.Services.Implementations
             estoqueDeSangue.DeleteEstoque();
             _dbcontext.SaveChanges();
         }
-     
 
-        public void Update(UpdateEstoqueDeSangueInputModel inputModel)
+
+        public void UpdateEstoque(Doador doador, int quantidadeML)
         {
-            var estoqueDeSangue = _dbcontext.EstoquesSangue.SingleOrDefault(e => e.Id == inputModel.Id);
+            var estoque = _dbcontext.EstoquesSangue
+                .FirstOrDefault(e => e.TipoSanguineo == doador.TipoSanguineo && e.FatorRh == doador.FatorRh);
 
-            estoqueDeSangue.Update(inputModel.TipoSanguineo, inputModel.QuantidadeML);
+            if (estoque == null)
+            {
+                // Se não existir, cria um novo registro no estoque
+                estoque = new EstoqueSangue(doador.TipoSanguineo, doador.FatorRh, quantidadeML);
+                _dbcontext.EstoquesSangue.Add(estoque);
+            }
+            else
+            {
+                // Se já existir, soma a quantidade doada
+                estoque.QuantidadeML += quantidadeML;
+                _dbcontext.EstoquesSangue.Update(estoque);
+            }
+
             _dbcontext.SaveChanges();
         }
+
     }
 }
