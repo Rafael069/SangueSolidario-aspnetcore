@@ -20,9 +20,9 @@ namespace SangueSolidario.Core.Entities
         public Doacao(int Id_doador, DateTime dataDoacao, int quantidadeML/*, Doador doador/*, DoacaoStatusEnum status*/)
         {
             IdDoador = Id_doador;
-            //DataDoacao = dataDoacao;
+            DataDoacao = dataDoacao;
             QuantidadeML = quantidadeML;
-            Doador = Doador;
+            //Doador = Doador;
             Status = DoacaoStatusEnum.Ativo;
         }
 

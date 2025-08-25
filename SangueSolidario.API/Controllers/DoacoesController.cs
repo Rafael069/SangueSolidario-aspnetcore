@@ -87,6 +87,15 @@ namespace SangueSolidario.API.Controllers
             return NoContent(); // Retorna 204 (sem conteúdo) após a exclusão bem-sucedida
         }
 
+        // Relatório de Doações nos Últimos 30 Dias
+        [HttpGet]
+        [Route("relatorio/doacoes-ultimos-30-dias")]
+        public IActionResult RelatorioDoacoesUltimos30Dias()
+        {
+            var relatorio = _doacaoService.GerarRelatorioDoacoesUltimos30Dias();
+            return Ok(relatorio);
+        }
+
 
     }
 }
