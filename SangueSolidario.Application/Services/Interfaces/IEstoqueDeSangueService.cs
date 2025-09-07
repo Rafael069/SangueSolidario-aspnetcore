@@ -16,8 +16,11 @@ namespace SangueSolidario.Application.Services.Interfaces
 
         int Create(NewEstoqueDeSangueInputModel inputModel);
 
-        void Update(UpdateEstoqueDeSangueInputModel inputModel);
+        void UpdateEstoque(Doador doador, int quantidadeML);
 
         void Delete(int id);
+
+        List<RelatorioEstoqueSangueViewModel> GerarRelatorioQuantidadePorTipo();
+        List<EstoqueDeSangueDetailsViewModel> VerificarEstoquesCriticos();
     }
 }
