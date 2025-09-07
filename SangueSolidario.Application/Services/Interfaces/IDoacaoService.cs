@@ -16,5 +16,6 @@ namespace SangueSolidario.Application.Services.Interfaces
         void Update(UpdateDoacaoInputModel inputModel);
 
         void Delete(int id);
+        List<RelatorioDoacaoViewModel> GerarRelatorioDoacoesUltimos30Dias();
     }
 }
