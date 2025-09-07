@@ -63,13 +63,14 @@ namespace SangueSolidario.API.Controllers
         //Atualizar estoques
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateEstoqueDeSangueInputModel inputModel)
+        public IActionResult Put(Doador doador, int quantidadeML)
         {
             // Validações
 
             //
-
-            _estoqueDeSangueService.Update(inputModel);
+            //Doador doador, int quantidadeML
+            //_estoqueDeSangueService.Update(inputModel);
+            _estoqueDeSangueService.UpdateEstoque(doador, quantidadeML);
 
             return NoContent();
 
@@ -88,6 +89,31 @@ namespace SangueSolidario.API.Controllers
 
 
         }
+
+
+        // Relatório de Estoque de Sangue por Tipo
+        [HttpGet]
+        [Route("relatorio/estoque")]
+        public IActionResult RelatorioEstoquePorTipo()
+        {
+            var relatorio = _estoqueDeSangueService.GerarRelatorioQuantidadePorTipo();
+            //var relatorio = _estoqueDeSangueService.();
+            return Ok(relatorio);
+        }
+
+        // Monitoramento de quantidade Mínima
+
+        [HttpGet("criticos")]
+        public IActionResult GetEstoquesCriticos()
+        {
+            var estoquesCriticos = _estoqueDeSangueService.VerificarEstoquesCriticos();
+
+            if (!estoquesCriticos.Any())
+                return Ok("Nenhum estoque abaixo do mínimo no momento.");
+
+            return Ok(estoquesCriticos);
+        }
+
 
     }
 }

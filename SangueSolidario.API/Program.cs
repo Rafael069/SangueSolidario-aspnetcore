@@ -1,7 +1,9 @@
 
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using SangueSolidario.Application.Services.Implementations;
 using SangueSolidario.Application.Services.Interfaces;
+using SangueSolidario.Application.Validators;
 using SangueSolidario.Infrastructure.Persistence;
 
 namespace SangueSolidario.API
@@ -36,7 +38,15 @@ namespace SangueSolidario.API
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<NewDoadorInputModelValidator>())
+
+            .AddJsonOptions(options =>
+             {
+                 //options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                 options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+
+             });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
