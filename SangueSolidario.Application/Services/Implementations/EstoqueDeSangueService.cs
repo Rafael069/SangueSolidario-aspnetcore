@@ -123,5 +123,23 @@ namespace SangueSolidario.Application.Services.Implementations
             _dbcontext.SaveChanges();
         }
 
+        // Verifica se QuantidadeML é menor que a QuantidadeMinimaML
+        // Retorna a lista no formato de EstoqueDeSangueDetailsViewModel.
+
+        public List<EstoqueDeSangueDetailsViewModel> VerificarEstoquesCriticos()
+        {
+            var estoquesCriticos = _dbcontext.EstoquesSangue
+                .Where(e => e.Status == EstoquesSangueEnum.Ativo && e.QuantidadeML < e.QuantidadeMinimaML)
+                .Select(e => new EstoqueDeSangueDetailsViewModel(
+                    e.Id,
+                    e.TipoSanguineo,
+                    e.FatorRh,
+                    e.QuantidadeML
+                ))
+                .ToList();
+
+            return estoquesCriticos;
+        }
+
     }
 }

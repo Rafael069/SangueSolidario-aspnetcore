@@ -50,13 +50,13 @@ namespace SangueSolidario.Application.Services.Implementations
         {
             var doacoes = _dbcontext.Doacoes;
 
-            // Filtrando livros ativos
+            // Filtrando  ativos
             var doacoesAtivas = _dbcontext.Doacoes
                 .Where(dc => dc.Status == DoacaoStatusEnum.Ativo)
                 .ToList();
 
             var doacoesViewModel = doacoesAtivas
-            .Select(dc => new DoacaoViewModel(dc.Id, dc.IdDoador, dc.DataDoacao))
+            .Select(dc => new DoacaoViewModel(dc.Id, dc.IdDoador, dc.DataDoacao,dc.QuantidadeML))
             .ToList();
 
             return doacoesViewModel;
@@ -103,7 +103,9 @@ namespace SangueSolidario.Application.Services.Implementations
         #region Lógica de Doações nos Últimos 30 Dias com Informações dos Doadores
         public List<RelatorioDoacaoViewModel> GerarRelatorioDoacoesUltimos30Dias()
         {
-            var dataLimite = DateTime.Now.AddDays(-30);
+            //var dataLimite = DateTime.Now.AddDays(-30);
+            var dataLimite = DateTime.UtcNow.AddDays(-30);
+
 
             var doacoesRecentes = _dbcontext.Doacoes
                 .Where(d => d.DataDoacao >= dataLimite && d.Status == DoacaoStatusEnum.Ativo)
