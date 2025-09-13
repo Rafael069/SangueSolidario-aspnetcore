@@ -11,6 +11,8 @@ namespace SangueSolidario.Core.Entities
         public string TipoSanguineo { get; set; }
         public string FatorRh { get; set; }
         public int QuantidadeML { get; set; }
+
+        public int QuantidadeMinimaML { get; set; }   // <-- nova coluna
         public EstoquesSangueEnum Status { get; set; }
 
         //public EstoqueSangue()
@@ -36,7 +38,7 @@ namespace SangueSolidario.Core.Entities
             }
         }
 
-        public void Update(string tipoSanguineo ,int quantidadeML)
+        public void Update(string tipoSanguineo, int quantidadeML)
         {
             TipoSanguineo = tipoSanguineo;
             QuantidadeML = quantidadeML;
