@@ -1,6 +1,9 @@
 
 using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SangueSolidario.Application.Commands.Doador.CreateDoador;
+using SangueSolidario.Application.Commands.Doadores.CreateDoador;
 using SangueSolidario.Application.Services.Implementations;
 using SangueSolidario.Application.Services.Interfaces;
 using SangueSolidario.Application.Validators;
@@ -49,6 +52,12 @@ namespace SangueSolidario.API
              });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
+
+            // Registrando o MediatR para o assembly onde estão os Commands e Handlers de Doadores.
+            // Usamos CreateDoadorCommand apenas como referência para localizar o assembly.
+            builder.Services.AddMediatR(typeof(CreateDoadorCommand));
+
+
             builder.Services.AddSwaggerGen();
 
 
