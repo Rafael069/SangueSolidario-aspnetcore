@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SangueSolidario.Application.InputModels;
-using SangueSolidario.Application.Services.Implementations;
-using SangueSolidario.Application.Services.Interfaces;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using SangueSolidario.Application.Commands.Doacaoes.CreateDoacao;
+using SangueSolidario.Application.Commands.Doacaoes.DeleteDoacao;
+using SangueSolidario.Application.Commands.Doacaoes.UpdateDoacao;
+using SangueSolidario.Application.Queries.Doacoes.GeAllDoacao;
+using SangueSolidario.Application.Queries.Doacoes.GetByIdDoacao;
+using SangueSolidario.Application.Queries.Doacoes.GetRelatorioDoacoesUltimos30Dias;
+
 
 namespace SangueSolidario.API.Controllers
 {
@@ -9,19 +14,23 @@ namespace SangueSolidario.API.Controllers
     public class DoacoesController : ControllerBase
     {
 
-        private readonly IDoacaoService _doacaoService;
+        
+        private readonly IMediator _mediator;
 
-        public DoacoesController(IDoacaoService doacaoService)
-        {
-            _doacaoService = doacaoService;
+        public DoacoesController(IMediator mediator)
+        {           
+            _mediator = mediator;
         }
 
         //Busca doacao
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        [HttpGet("detalhes-doacoes/{id:int}")]
+
+        public async Task<IActionResult> GetById(int id)
         {
-            var doacao = _doacaoService.GetById(id);
+            var queryByIdDoadordoacao = new GetByIdDoacaoQuery(id);
+
+            var doacao = await _mediator.Send(queryByIdDoadordoacao);
 
             if (doacao == null)
             {
@@ -32,70 +41,83 @@ namespace SangueSolidario.API.Controllers
         }
 
 
-
         //Busca todas doacoes
-        [HttpGet]
-        [Route("all")]
+       
 
-        public IActionResult GetAll()
+        [HttpGet("all-doacoes")]
+
+        public async Task<IActionResult> GetAll()
         {
+            var query = new GetAllDoacaoQuery();
 
-            var doacoes = _doacaoService.GetAll();
+            var doacoes = await _mediator.Send(query);
+
             return Ok(doacoes);
         }
+
 
 
 
         //Cadastro de doacoes
 
         [HttpPost]
-        public IActionResult Post([FromBody] NewDoacaoInputModel inputModel)
+
+        public async Task<IActionResult> Post([FromBody] CreateDoacaoCommand command)
         {
             // Validação
 
-            //
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); // Retorna erros de vinculação
+            }
 
-            var id = _doacaoService.Create(inputModel);
+            var id = await _mediator.Send(command);
 
-            return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
+            return CreatedAtAction(nameof(GetById), new { id = id }, command);
+
         }
+
 
 
         //Atualizar doacoes
 
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateDoacaoInputModel inputModel)
-        {
-            // Validações
-            //if (updateLivro.descricao.lengh > 50)
-            //{
-            //    return BadRequest();
-            //}
 
-            _doacaoService.Update(inputModel);
+        [HttpPut("{id:int}")]
+
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateDoacaoCommand command)
+        {
+            await _mediator.Send(command);
 
             return NoContent();
         }
 
+
         //Deleta docacoes
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _doacaoService.Delete(id);
+        [HttpDelete("{id:int}")]
 
-            return NoContent(); // Retorna 204 (sem conteúdo) após a exclusão bem-sucedida
+        public async Task<IActionResult> Delete(int id)
+        {
+            var command = new DeleteDoacaoCommand(id);
+
+            await _mediator.Send(command);
+
+            return NoContent();
         }
+
 
         // Relatório de Doações nos Últimos 30 Dias
+
         [HttpGet]
         [Route("relatorio/doacoes-ultimos-30-dias")]
-        public IActionResult RelatorioDoacoesUltimos30Dias()
+        public async Task<IActionResult> RelatorioDoacoesUltimos30Dias()
         {
-            var relatorio = _doacaoService.GerarRelatorioDoacoesUltimos30Dias();
+            var query = new GetRelatorioDoacao30DiasQuery();
+
+            var relatorio = await _mediator.Send(query);
+
             return Ok(relatorio);
         }
-
 
     }
 }

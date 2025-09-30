@@ -1,30 +1,35 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SangueSolidario.Application.InputModels;
-using SangueSolidario.Application.Services.Implementations;
-using SangueSolidario.Application.Services.Interfaces;
-using System.Runtime.ConstrainedExecution;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using SangueSolidario.Application.Commands.Enderecos.DeleteEndereco;
+using SangueSolidario.Application.Commands.Enderecos.UpdateEndereco;
+using SangueSolidario.Application.Queries.Enderecos.GetAllEndereco;
+using SangueSolidario.Application.Queries.Enderecos.GetByIdEndereco;
+
 
 namespace SangueSolidario.API.Controllers
 {
     [Route("api/enderecos")]
     public class EnderecosController : ControllerBase
     {
-        private readonly IEnderecoService _enderecoService;
 
-        public EnderecosController(IEnderecoService enderecoService)
+        private readonly IMediator _mediator;
+
+        public EnderecosController(IMediator mediator)
         {
-            _enderecoService = enderecoService;
+            _mediator = mediator;
         }
 
         //Cadastro de endereço integrar API externa para consulta CEP. (PLUS)
 
         //Busca endereco
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        [HttpGet("detalhes-enderecos/{id:int}")]
+        public async Task<IActionResult> GetById(int id)
         {
 
-            var endereco = _enderecoService.GetById(id);
+            var queryByIdEndereco = new GetByIdEnderecoQuery(id);
+
+            var endereco = await _mediator.Send(queryByIdEndereco);
 
             if (endereco == null)
             {
@@ -34,55 +39,46 @@ namespace SangueSolidario.API.Controllers
             return Ok(endereco);
         }
 
+
+
         //Busca todos enderecos
 
-        [HttpGet]
-        [Route("all")]
-        
-        public IActionResult GetAll()
+        [HttpGet("all-doacoes")]
+        public async Task<IActionResult> GetAll()
         {
-            var enderecos = _enderecoService.GetAll();
+            var query = new GetAllEnderecoQuery();
+
+            var enderecos = await _mediator.Send(query);
             return Ok(enderecos);
         }
 
-
-        //Cadastro de enderecos
-
-
-        //[HttpPost]
-        //public IActionResult Post([FromBody] NewEnderecoInputModel inputModel)
-        //{
-        //    // Validação
-
-        //    //
-
-        //    var id = _enderecoService.Create(inputModel);
-        //    return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
-
-        //}
+        
 
 
         //Atualizar enderecos
 
-
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateEnderecoInputModel inputModel)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateEnderecoCommand command)
         {
-            // Validações
+            await _mediator.Send(command);
 
-            //
-            _enderecoService.Update(inputModel);
             return NoContent();
         }
 
         //Deleta enderecos
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _enderecoService.Delete(id);
 
-            return NoContent(); // Retorna 204 (sem conteúdo) após a exclusão bem-sucedida
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+
+            var command = new DeleteEnderecoCommand(id);
+
+            await _mediator.Send(command);
+
+            return NoContent();
+
+
         }
 
     }

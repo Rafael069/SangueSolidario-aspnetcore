@@ -1,9 +1,11 @@
-﻿using FluentValidation;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SangueSolidario.Application.InputModels;
-using SangueSolidario.Application.Services.Implementations;
-using SangueSolidario.Application.Services.Interfaces;
-using System.Threading.Tasks;
+using SangueSolidario.Application.Commands.Doadores.CreateDoador;
+using SangueSolidario.Application.Commands.Doadores.DeleteDoador;
+using SangueSolidario.Application.Commands.Doadores.UpdateDoador;
+using SangueSolidario.Application.Queries.Doador.GetByIdDoador;
+using SangueSolidario.Application.Queries.Doadores.GetAllDoador;
+
 
 namespace SangueSolidario.API.Controllers
 {
@@ -11,25 +13,23 @@ namespace SangueSolidario.API.Controllers
     public class DoadoresController : ControllerBase
     {
 
-        private readonly IDoadorService _doadorService;
-        private readonly IValidator<NewDoadorInputModel> _validator;
+        private readonly IMediator _mediator;
 
-        public DoadoresController(IDoadorService doadorService, IValidator<NewDoadorInputModel> validator)
+        public DoadoresController(IMediator mediator)
         {
-            _doadorService = doadorService;
-            _validator = validator;
+            _mediator = mediator;
         }
 
         //Busca doador especifíco
 
-        //Retorna histórico de doações do doador
+        [HttpGet("detalhes-doadores/{id:int}")]
 
-        [HttpGet("{id}")]
-
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
 
-            var doador = _doadorService.GetById(id);
+            var queryByIdDoador = new GetByIdDoadorQuery(id);
+
+            var doador = await _mediator.Send(queryByIdDoador);
 
             if (doador == null)
             {
@@ -41,12 +41,15 @@ namespace SangueSolidario.API.Controllers
 
 
         //Busca todos doadores
-        [HttpGet]
-        [Route("all")]
-        
-        public IActionResult GetAll()
+
+        [HttpGet("all-doadores")]
+
+        public async Task<IActionResult> GetAll()
         {
-            var doadores = _doadorService.GetAll();
+            var query = new GetAllDoadorQuery();
+
+            var doadores = await _mediator.Send(query);
+
             return Ok(doadores);
         }
 
@@ -54,64 +57,50 @@ namespace SangueSolidario.API.Controllers
 
 
         [HttpPost]
-        public async Task <IActionResult> Post([FromBody] NewDoadorInputModel inputModel)
+        public async Task<IActionResult> Post([FromBody] CreateDoadorCommand command)
         {
-            // Validação
-
-            // Validação com FluentValidation
-            var validationResult = await _validator.ValidateAsync(inputModel);
-
-            // Se a validação falhar, retorna os erros
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(validationResult.Errors);  // Retorna erros de validação
-            }
-
             // Validação
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState); // Retorna erros de vinculação
             }
-     
 
-            var id = await _doadorService.Create(inputModel);
+            var id = await _mediator.Send(command);
 
-            return CreatedAtAction(nameof(GetById), new { id = id }, inputModel);
+            return CreatedAtAction(nameof(GetById), new { id = id }, command);
 
         }
 
 
         //Atualizar doares
 
-
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateDoadorInputModel inputModel)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateDoadorCommand command)
         {
-            // Validações
-            //if (updateLivro.descricao.lengh > 50)
-            //{
-            //    return BadRequest();
-            //}
-            _doadorService.Update(inputModel);
+
+            await _mediator.Send(command);
 
             return NoContent();
 
         }
 
+
         //Deleta doares
 
+
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
 
-            _doadorService.Delete(id);
+            var command = new DeleteDoadorCommand(id);
 
-            return NoContent(); // Retorna 204 (sem conteúdo) após a exclusão bem-sucedida
+            await _mediator.Send(command);
+
+            return NoContent();
 
 
         }
-
 
     }
 }
