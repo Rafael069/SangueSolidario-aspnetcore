@@ -23,7 +23,6 @@ namespace SangueSolidario.Application.Commands.Doadores.DeleteDoador
             var doadores = _dbcontext.Doadores.SingleOrDefault(d => d.Id == request.Id);
 
             doadores.DeleteDoador();
-
             await _dbcontext.SaveChangesAsync();
 
             return Unit.Value;

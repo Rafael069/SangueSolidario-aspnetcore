@@ -1,50 +1,47 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SangueSolidario.Application.Services.Interfaces;
 using SangueSolidario.Core.Entities;
 using SangueSolidario.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SangueSolidario.Application.Commands.EstoquesDeSangue.UpdateEstoquesDeSangue;
 
 namespace SangueSolidario.Application.Commands.Doacaoes.CreateDoacao
 {
     public class CreateDoacaoCommandHandler : IRequestHandler<CreateDoacaoCommand, int>
     {
         private readonly SangueSolidarioDbContext _dbcontext;
+        private readonly IMediator _mediator;
 
-        private readonly IEstoqueDeSangueService _estoqueService;
-
-        public CreateDoacaoCommandHandler(SangueSolidarioDbContext dbcontext, IEstoqueDeSangueService estoqueService)
+        public CreateDoacaoCommandHandler(SangueSolidarioDbContext dbcontext, IMediator mediator)
         {
             _dbcontext = dbcontext;
-            _estoqueService = estoqueService;
+            _mediator = mediator;
         }
 
         public async Task<int> Handle(CreateDoacaoCommand request, CancellationToken cancellationToken)
         {
             // Buscar o doador
-            var doador = await _dbcontext.Doadores.FirstOrDefaultAsync(d => d.Id == request.DoadorId);
+            var doador = await _dbcontext.Doadores
+                .FirstOrDefaultAsync(d => d.Id == request.DoadorId, cancellationToken);
+
             if (doador == null)
             {
                 throw new InvalidOperationException("Doador não encontrado.");
             }
 
+            // Criar doação
+            var doacao = new Doacao(request.DoadorId, request.DataDoacao, request.QuantidadeML);
+            await _dbcontext.Doacoes.AddAsync(doacao, cancellationToken);
 
-            // Criação da doação
-           var doacao = new Doacao(request.DoadorId, request.DataDoacao, request.QuantidadeML);
-           await _dbcontext.Doacoes.AddAsync(doacao);
+            // Disparar atualização de estoque (via outro Command/Handler)
+            await _mediator.Send(
+                new UpdateEstoquesDeSangueCommand
+                (doador.TipoSanguineo, doador.FatorRh, request.QuantidadeML),
+                cancellationToken
+              
+            );
 
-
-
-            // Atualizar estoque via EstoqueService
-             _estoqueService.UpdateEstoque(doador, request.QuantidadeML);
-
-            // Salvar todas as mudanças de uma vez
-            await _dbcontext.SaveChangesAsync();
-
+            // Salvar tudo
+            await _dbcontext.SaveChangesAsync(cancellationToken);
 
             return doacao.Id;
         }

@@ -13,10 +13,10 @@ namespace SangueSolidario.Application.Commands.Doadores.CreateDoador
         private readonly SangueSolidarioDbContext _dbcontext;
         private readonly IMediator _mediator;
 
-        public CreateDoadorCommandHandler(SangueSolidarioDbContext dbcontext, IMediator mediator)
+        public CreateDoadorCommandHandler(SangueSolidarioDbContext dbcontext , IMediator mediator)
         {
             _dbcontext = dbcontext;
-            _mediator = mediator;
+           _mediator = mediator;
         }
 
         public async Task<int> Handle(CreateDoadorCommand request, CancellationToken cancellationToken)
