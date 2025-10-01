@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SangueSolidario.Application.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,15 @@ namespace SangueSolidario.Application.Commands.EstoquesDeSangue.UpdateEstoquesDe
 {
     public class UpdateEstoquesDeSangueCommand : IRequest<Unit>
     {
-        public UpdateEstoquesDeSangueCommand(Doador doador, int quantidadeML)
+        public UpdateEstoquesDeSangueCommand(string tipoSanguineo, string fatorRh, int quantidadeML)
         {
-            Doador = doador;
+            TipoSanguineo = tipoSanguineo;
+            FatorRh = fatorRh;
             QuantidadeML = quantidadeML;
         }
 
-        public Doador Doador { get; private set; }
+        public string TipoSanguineo { get; private set; }
+        public string FatorRh { get; private set; }
         public int QuantidadeML { get; private set; }
     }
 }

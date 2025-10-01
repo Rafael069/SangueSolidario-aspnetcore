@@ -45,16 +45,16 @@ namespace SangueSolidario.Application.Commands.EstoquesDeSangue.UpdateEstoquesDe
 
             var estoque = await _dbcontext.EstoquesSangue
                 .FirstOrDefaultAsync(e =>
-                    e.TipoSanguineo == request.Doador.TipoSanguineo &&
-                    e.FatorRh == request.Doador.FatorRh,
+                    e.TipoSanguineo == request.TipoSanguineo &&
+                    e.FatorRh == request.FatorRh,
                     cancellationToken);
 
             if (estoque == null)
             {
                 // Se não existir, cria um novo registro no estoque
                 estoque = new EstoqueSangue(
-                    request.Doador.TipoSanguineo,
-                    request.Doador.FatorRh,
+                    request.TipoSanguineo,
+                    request.FatorRh,
                     request.QuantidadeML);
 
                 await _dbcontext.EstoquesSangue.AddAsync(estoque, cancellationToken);
