@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SangueSolidario.Core\SangueSolidario.Core.csproj" />
     <ProjectReference Include="..\SangueSolidario.Infrastructure\SangueSolidario.Infrastructure.csproj" />
   </ItemGroup>
