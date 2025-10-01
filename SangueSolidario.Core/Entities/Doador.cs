@@ -15,7 +15,7 @@ public class Doador : BaseEntity
     public string FatorRh { get; set; }
     public DoadorStatusEnum Status { get;  set; }
     public int IdEndereco { get; set; }
-    public int IdDoacao { get; set; }
+
     public Endereco Endereco { get; set; }
     public List<Doacao> Doacoes { get; set; } = new List<Doacao>();
 
@@ -32,13 +32,6 @@ public class Doador : BaseEntity
         TipoSanguineo = tipoSanguineo;
         FatorRh = fatorRh;
         Status = DoadorStatusEnum.Ativo;
-        
-        //IdEndereco = idEndereco;
-        //Doacoes= new List<Doacao>();
-        //this.Endereco = endereco;
-        //IdEndereco = idEndereco;
-        //IdDoacao = idDoacao;
-        //Endereco = endereco;
     }
 
 
@@ -59,7 +52,6 @@ public class Doador : BaseEntity
         Peso = peso;
         TipoSanguineo= tipoSanguineo;
         FatorRh = fatorRh;
-        //Status = status;
     }
 
 }
