@@ -9,7 +9,7 @@ namespace SangueSolidario.Application.InputModels
 {
     public class NewDoacaoInputModel
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public int DoadorId { get; set; }
         public DateTime DataDoacao { get; set; }
         public int QuantidadeML { get; set; }
