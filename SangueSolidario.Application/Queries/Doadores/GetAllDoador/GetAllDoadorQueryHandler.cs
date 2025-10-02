@@ -26,11 +26,6 @@ namespace SangueSolidario.Application.Queries.Doadores.GetAllDoador
             var doadores = _dbcontext.Doadores;
 
             // Filtrando doadores ativos
-            //var doadoresAtivos = _dbcontext.Doadores
-            //    .Where(d => d.Status == DoadorStatusEnum.Ativo)
-            //    .ToList();
-
-            // Filtrando doadores ativos
 
             var doadoresAtivos = await _dbcontext.Doadores
                .Where(d => d.Status == DoadorStatusEnum.Ativo)

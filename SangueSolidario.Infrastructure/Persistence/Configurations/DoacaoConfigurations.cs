@@ -21,7 +21,7 @@ namespace SangueSolidario.Infrastructure.Persistence.Configurations
                  .HasKey(dc => dc.Id);
 
             builder
-                        .HasOne(dc => dc.Doador)
+                       .HasOne(dc => dc.Doador)
                        .WithMany(d => d.Doacoes)
                        .HasForeignKey(dc => dc.IdDoador)
                        .OnDelete(DeleteBehavior.Restrict);

@@ -45,9 +45,6 @@ namespace SangueSolidario.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IdDoacao")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdEndereco")
                         .HasColumnType("int");
 
@@ -148,6 +145,9 @@ namespace SangueSolidario.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("QuantidadeML")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuantidadeMinimaML")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")

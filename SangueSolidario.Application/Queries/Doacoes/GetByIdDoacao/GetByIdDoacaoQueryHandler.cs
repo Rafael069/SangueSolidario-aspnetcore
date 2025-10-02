@@ -23,7 +23,8 @@ namespace SangueSolidario.Application.Queries.Doacoes.GetByIdDoacao
 
         public async Task<DoacaoDetailsViewModel> Handle(GetByIdDoacaoQuery request, CancellationToken cancellationToken)
         {
-            var doacao = await _dbcontext.Doacoes.SingleOrDefaultAsync(dc => dc.Id == request.Id);
+            var doacao = await _dbcontext.Doacoes
+                .SingleOrDefaultAsync(dc => dc.Id == request.Id, cancellationToken);
 
             if (doacao.Status == DoacaoStatusEnum.Removido)
                 return null;
@@ -37,6 +38,7 @@ namespace SangueSolidario.Application.Queries.Doacoes.GetByIdDoacao
                 );
 
             return doacoesDetailsViewModel;
+
         }
     }
 }

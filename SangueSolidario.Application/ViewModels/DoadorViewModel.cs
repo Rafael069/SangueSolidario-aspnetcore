@@ -18,10 +18,10 @@ namespace SangueSolidario.Application.ViewModels
             Genero = genero;
         }
 
-        public int Id { get; private set; }
-        public string NomeCompleto { get; private set; }
-        public string Email { get; private set; }
-        public DateTime DataNascimento { get; private set; }
-        public string Genero { get; private set; }
+        public int Id { get;   set; }
+        public string NomeCompleto { get;  set; }
+        public string Email { get;  set; }
+        public DateTime DataNascimento { get;  set; }
+        public string Genero { get;  set; }
     }
 }

@@ -27,6 +27,17 @@ namespace SangueSolidario.Application.ViewModels
             Status = status;
         }
 
+        public DoadorDetailsViewModel(int id, string nomeCompleto, string email, string tipoSanguineo, string fatorRh)
+        {
+            Id = id;
+            NomeCompleto = nomeCompleto;
+            Email = email;
+            TipoSanguineo = tipoSanguineo;
+            FatorRh = fatorRh;
+            Status = DoadorStatusEnum.Ativo; 
+        }
+
+
         public int Id { get;  set; }
         public string NomeCompleto { get; set; }
         public string Email { get; set; }
