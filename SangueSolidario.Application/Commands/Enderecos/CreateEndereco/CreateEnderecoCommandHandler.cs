@@ -1,14 +1,8 @@
 ﻿using MediatR;
-using SangueSolidario.Application.Commands.Doadores.CreateDoador;
-using SangueSolidario.Application.InputModels;
+using SangueSolidario.Core.Entities;
 using SangueSolidario.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace SangueSolidario.Application.Commands.Enderecos.CreateEndereco
 {
@@ -23,35 +17,38 @@ namespace SangueSolidario.Application.Commands.Enderecos.CreateEndereco
             _httpClient = httpClient;
         }
 
-        //Cria um novo endereço, agora integrando com ViaCepService
         public async Task<int> Handle(CreateEnderecoCommand request, CancellationToken cancellationToken)
         {
-            // Fazendo a requisição à API do ViaCEP
-           // var response = await _httpClient.GetAsync($"{request.Cep}/json/");
-           var response = await _httpClient.GetAsync($"https://viacep.com.br/ws/{request.Cep}/json/");
-
+            // 1️ Chama a API do ViaCEP
+            var response = await _httpClient.GetAsync($"https://viacep.com.br/ws/{request.CEP}/json/");
             response.EnsureSuccessStatusCode();
 
-
-            // Deserializando a resposta da API do ViaCEP
+            // 2️ Lê o JSON e mapeia para um record local
             var enderecoData = await response.Content.ReadAsStringAsync(cancellationToken);
-            var viaCepEndereco = JsonSerializer.Deserialize<NewEnderecoInputModel>(enderecoData);
 
-            // Criando a entidade Endereco
+            var viaCepEndereco = JsonSerializer.Deserialize<ViaCepResponse>(enderecoData);
+
+            // 3️ Cria a entidade Endereco
             var endereco = new Endereco(
                 viaCepEndereco.Logradouro,
-                viaCepEndereco.Cidade,
-                viaCepEndereco.Estado,
-                viaCepEndereco.CEP,
-                   //viaCepEndereco.IdDoador = request.Id
-                request.Id // o doadorId que veio do command
+                viaCepEndereco.Localidade,
+                viaCepEndereco.Uf,
+                viaCepEndereco.Cep,
+                request.DoadorId // Id do doador vindo do Command
             );
 
-            // Salvando no banco
             await _dbcontext.Enderecos.AddAsync(endereco, cancellationToken);
             await _dbcontext.SaveChangesAsync(cancellationToken);
 
             return endereco.Id;
         }
+
+        // 4 Record interno apenas para deserializar o ViaCEP
+        private record ViaCepResponse(
+            [property: JsonPropertyName("logradouro")] string Logradouro,
+            [property: JsonPropertyName("localidade")] string Localidade,
+            [property: JsonPropertyName("uf")] string Uf,
+            [property: JsonPropertyName("cep")] string Cep
+        );
     }
 }
